@@ -1,0 +1,22 @@
+name: Deploy Built Site to Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build -- --public-url /FoxGame/
+      - name: Deploy site to gh-pages branch
+        env:
+          GH_PAT: ${{secrets.PAT}}
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          build_dir: dist
